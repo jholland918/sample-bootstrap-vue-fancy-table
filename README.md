@@ -15,5 +15,10 @@ npm run serve
 npm run build
 ```
 
+### Run your end-to-end tests
+```
+npm run test:e2e
+```
+
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
