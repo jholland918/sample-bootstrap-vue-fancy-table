@@ -5,28 +5,31 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "test:e2e": "vue-cli-service test:e2e"
+    "test:e2e": "vue-cli-service test:e2e",
+    "test:components": "vue-cli-service test:components"
   },
   "dependencies": {
     "bootstrap-vue": "^2.17.3",
     "core-js": "^3.6.5",
-    "cypress": "^6.2.0",
     "jspdf": "^2.2.0",
     "jspdf-autotable": "^3.5.13",
     "vue": "^2.6.11"
   },
   "devDependencies": {
     "@babel/polyfill": "^7.11.5",
+    "@cypress/vue": "*",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-e2e-cypress": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "bootstrap": "^4.5.2",
+    "cypress": "^6.2.0",
     "mutationobserver-shim": "^0.3.7",
     "popper.js": "^1.16.1",
     "portal-vue": "^2.1.7",
     "sass": "^1.26.11",
     "sass-loader": "^10.0.2",
     "vue-cli-plugin-bootstrap-vue": "~0.7.0",
+    "vue-cli-plugin-cypress-experimental": "~1.2.0",
     "vue-template-compiler": "^2.6.11"
   }
 }
