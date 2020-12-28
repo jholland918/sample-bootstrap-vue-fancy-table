@@ -5,8 +5,8 @@ import '@/plugins/bootstrap-vue';
 import '@/plugins/font-awesome';
 
 import { library as fontawesome } from '@fortawesome/fontawesome-svg-core';
-import { faFileCsv, faFileExcel, faFilePdf, faCopy, faPrint } from '@fortawesome/free-solid-svg-icons';
-fontawesome.add(faFileCsv, faFileExcel, faFilePdf, faCopy, faPrint);
+import { faFileCsv, faFileExcel, faFilePdf, faPrint, faFileAlt } from '@fortawesome/free-solid-svg-icons';
+fontawesome.add(faFileCsv, faFileExcel, faFilePdf, faPrint, faFileAlt);
 
 import BaseTable from '@/components/fancy-tables/base-table';
 import PageSizeSelect from '@/components/fancy-tables/PageSizeSelect';
@@ -113,16 +113,16 @@ describe('Base Table', () => {
     it.only('should render the export buttons', () => {
         mount({
             template: `<base-table :items="items">
-                <div slot="default" slot-scope="{ items }">
-                    <export-buttons></export-buttons>
-                    <b-table :items="items"></b-table>
+                <div slot="default" slot-scope="scope">
+                    <export-buttons v-bind:get-data="scope.getData"></export-buttons>
+                    <b-table :items="scope.items"></b-table>
                 </div>
             </base-table>`,
             data: function () {
                 return {
                     items: items
                 }
-            }
+            },
         });
 
         cy.get('.export-buttons').should('be.visible');

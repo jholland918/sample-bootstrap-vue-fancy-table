@@ -4,3 +4,7 @@
 [1227/182349.677:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
 [1227/194058.600:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
 [1227/202321.921:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1228/012235.578:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1228/084651.819:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1228/153248.007:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\Jason\AppData\Roaming\Cypress\cy\production\browsers\chrome-stable\interactive\Crashpad\attachments\365e3e7b-65d6-45c6-88c0-43ec37302286: The system cannot find the path specified. (0x3)
+[1228/154340.871:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)

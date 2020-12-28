@@ -1,7 +1,7 @@
 <template>
   <div class="export-buttons">
-    <b-button v-on:click="onCopyClick"
-      ><font-awesome-icon :icon="['fas', 'copy']" /> Copy</b-button
+    <b-button v-on:click="onTextClick"
+      ><font-awesome-icon :icon="['fas', 'file-alt']" /> Text</b-button
     >
     <b-button v-on:click="onExcelClick"
       ><font-awesome-icon :icon="['fas', 'file-excel']" /> Excel</b-button
@@ -19,7 +19,7 @@
 </template>
 <script>
 // These `const getSomeLib = () => import("some-lib");` statements are used for lazy loading libraries.
-// This is beneficial for the PDF and Excel libraries since they are large and are not necessarily used 
+// This is beneficial for the PDF and Excel libraries since they are large and are not necessarily used
 // every time the user visits a page with this control.
 const getJsPDF = () => import("jspdf");
 const getJspdfAutotable = () => import("jspdf-autotable");
@@ -27,53 +27,114 @@ const getXLSX = () => import("xlsx/xlsx.mini");
 
 export default {
   name: "export-buttons",
+  props: {
+    filename: {
+      type: String,
+      default: "Export",
+      validator: function (value) {
+        return value.length > 0;
+      },
+    },
+    getData: {
+      type: Function,
+    },
+  },
   data() {
     return {
       text: "",
     };
   },
   methods: {
-    onCopyClick() {
-      console.log("onCopyClick");
-    },
-    onExcelClick() {
-      console.log("onExcelClick");
-
-      let data = [
-        ["id", "name", "value"],
-        [1, "sheetjs", 7262],
-        [2, "js-xlsx", 6969],
-      ];
-
-      getXLSX().then((XLSX) => {
-        var worksheet = XLSX.utils.aoa_to_sheet(data);
-        var book = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(book, worksheet, "SheetJS");
-        XLSX.writeFile(book, `somefile.xlsx`);
-      });
-    },
-    onCsvClick() {
-      console.log("onCsvClick");
-    },
     onPdfClick() {
-      // These gets/thens lazy load the jsPDF library.
       getJsPDF()
         .then(({ jsPDF }) => getJspdfAutotable().then(() => jsPDF))
         .then((jsPDF) => {
+          let data = this.getData();
+
           const doc = new jsPDF();
           doc.autoTable({
-            head: [["Name", "Email", "Country2"]],
-            body: [
-              ["David", "david@example.com", "Sweden"],
-              ["Castille", "castille@example.com", "Spain"],
-            ],
+            head: [data.head],
+            body: data.body,
           });
 
-          doc.save("table.pdf");
+          doc.save(`${this.filename}.pdf`);
         });
     },
+    onTextClick() {
+      this.exportWithSheetJs("txt");
+    },
+    onExcelClick() {
+      this.exportWithSheetJs("xlsx");
+    },
+    onCsvClick() {
+      this.exportWithSheetJs("csv");
+    },
     onPrintClick() {
-      console.log("onPrintClick");
+      getXLSX().then((XLSX) => {
+        let header = `<!DOCTYPE html>
+        <html lang="en">
+          <head>
+            <meta charset="utf-8" />
+            <meta http-equiv="x-ua-compatible" content="ie=edge" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <title>${this.filename}</title>
+            <style>
+              body{
+                font-family: sans-serif;
+              }
+              #table1 {
+                border: 2px solid #000000;
+                width: 100%;
+                text-align: left;
+                border-collapse: collapse;
+              }
+              #table1 td, #table1 th {
+                border: 1px solid #000000;
+                padding: 5px 4px;
+              }
+              #table1 tbody td {
+                font-size: 13px;
+              }
+              #table1 tr:first-child {
+                background: #CFCFCF;
+                border-bottom: 2px solid #000000;
+              }
+              #table1 tr:first-child td {
+                font-size: 15px;
+                font-weight: bold;
+                color: #000000;
+                text-align: left;
+              }
+            </style>
+          </head>
+          <body>`;
+
+        let data = this.getData();
+        let aoa = data.body;
+        aoa.unshift(data.head);
+
+        let sheet = XLSX.utils.aoa_to_sheet(aoa);
+        let html = XLSX.utils.sheet_to_html(sheet, {
+          id: "table1",
+          header: header,
+        });
+
+        // Use timestamp for the window name so multiple export clicks don't reuse the same window.
+        let printWindow = window.open("", `export-${new Date().getTime()}`);
+        printWindow.document.write(html);
+      });
+    },
+    exportWithSheetJs(extension) {
+      getXLSX().then((XLSX) => {
+        let data = this.getData();
+        let aoa = data.body;
+        aoa.unshift(data.head);
+
+        let sheet = XLSX.utils.aoa_to_sheet(aoa);
+        let book = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(book, sheet, "Sheet1");
+        XLSX.writeFile(book, `${this.filename}.${extension}`);
+      });
     },
   },
 };
