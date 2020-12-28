@@ -18,9 +18,12 @@
   </div>
 </template>
 <script>
-const getJsPDF = () => import("jspdf"); // lazy jspdf import
-const getJspdfAutotable = () => import("jspdf-autotable"); // lazy jspdf-autotable import
-const getXLSX = () => import("xlsx/xlsx.mini"); // lazy xlsx/xlsx.mini import
+// These `const getSomeLib = () => import("some-lib");` statements are used for lazy loading libraries.
+// This is beneficial for the PDF and Excel libraries since they are large and are not necessarily used 
+// every time the user visits a page with this control.
+const getJsPDF = () => import("jspdf");
+const getJspdfAutotable = () => import("jspdf-autotable");
+const getXLSX = () => import("xlsx/xlsx.mini");
 
 export default {
   name: "export-buttons",
