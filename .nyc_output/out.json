@@ -116,10 +116,10 @@
     },
     "branchMap": {},
     "s": {
-      "0": 2
+      "0": 0
     },
     "f": {
-      "0": 2
+      "0": 0
     },
     "b": {},
     "inputSourceMap": {
@@ -137,5 +137,69 @@
     },
     "_coverageSchema": "1a1c01bbd47fc00a2c39e90264f33305004495a9",
     "hash": "518f310251945133dfac667a51a5a8373899d5e1"
+  },
+  "C:\\Users\\Jason\\Documents\\sample-bootstrap-vue-fancy-table\\src\\components\\fancy-tables\\SearchInput.vue": {
+    "path": "C:\\Users\\Jason\\Documents\\sample-bootstrap-vue-fancy-table\\src\\components\\fancy-tables\\SearchInput.vue",
+    "statementMap": {
+      "0": {
+        "start": {
+          "line": 11,
+          "column": 4
+        },
+        "end": {
+          "line": 13,
+          "column": 6
+        }
+      }
+    },
+    "fnMap": {
+      "0": {
+        "name": "(anonymous_0)",
+        "decl": {
+          "start": {
+            "line": 10,
+            "column": 2
+          },
+          "end": {
+            "line": 10,
+            "column": 3
+          }
+        },
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 9
+          },
+          "end": {
+            "line": 14,
+            "column": 3
+          }
+        },
+        "line": 10
+      }
+    },
+    "branchMap": {},
+    "s": {
+      "0": 2
+    },
+    "f": {
+      "0": 2
+    },
+    "b": {},
+    "inputSourceMap": {
+      "version": 3,
+      "sources": [
+        "C:\\Users\\Jason\\Documents\\sample-bootstrap-vue-fancy-table\\src\\components\\fancy-tables\\SearchInput.vue"
+      ],
+      "names": [],
+      "mappings": ";;;;;;;AAOA;AACA;AACA;AACA;AACA;AACA;AACA;AACA",
+      "file": "SearchInput.vue",
+      "sourceRoot": "",
+      "sourcesContent": [
+        "<template>\r\n  <div class=\"search-input\">\r\n    Search\r\n    <b-form-input v-model=\"text\" placeholder=\"Enter search text\"></b-form-input>\r\n  </div>\r\n</template>\r\n<script>\r\nexport default {\r\n  name: \"search-input\",\r\n  data() {\r\n    return {\r\n      text: \"\",\r\n    };\r\n  },\r\n};\r\n</script>\r\n<style scoped>\r\n.search-input {\r\n  display: flex;\r\n  align-items: center;\r\n  max-width: 200px;\r\n}\r\n.search-input > input {\r\n    margin-left: 0.5rem;\r\n}\r\n</style>"
+      ]
+    },
+    "_coverageSchema": "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    "hash": "58574ed90d5f281a1c4ca0a1176f5de6c5e5f09e"
   }
 }
