@@ -1,26 +1,141 @@
 {
-  "C:\\Users\\Jason\\Documents\\sample-bootstrap-vue-fancy-table\\src\\components\\Greetings.vue": {
-    "path": "C:\\Users\\Jason\\Documents\\sample-bootstrap-vue-fancy-table\\src\\components\\Greetings.vue",
-    "statementMap": {},
+  "C:\\Users\\Jason\\Documents\\sample-bootstrap-vue-fancy-table\\src\\plugins\\bootstrap-vue.js": {
+    "path": "C:\\Users\\Jason\\Documents\\sample-bootstrap-vue-fancy-table\\src\\plugins\\bootstrap-vue.js",
+    "statementMap": {
+      "0": {
+        "start": {
+          "line": 7,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 21
+        }
+      }
+    },
     "fnMap": {},
     "branchMap": {},
-    "s": {},
+    "s": {
+      "0": 2
+    },
     "f": {},
+    "b": {},
+    "_coverageSchema": "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    "hash": "b617f23851f57d3f81f3ee5e3c681548bea31717"
+  },
+  "C:\\Users\\Jason\\Documents\\sample-bootstrap-vue-fancy-table\\src\\components\\fancy-tables\\base-table.js": {
+    "path": "C:\\Users\\Jason\\Documents\\sample-bootstrap-vue-fancy-table\\src\\components\\fancy-tables\\base-table.js",
+    "statementMap": {
+      "0": {
+        "start": {
+          "line": 12,
+          "column": 8
+        },
+        "end": {
+          "line": 15,
+          "column": 11
+        }
+      }
+    },
+    "fnMap": {
+      "0": {
+        "name": "(anonymous_0)",
+        "decl": {
+          "start": {
+            "line": 11,
+            "column": 4
+          },
+          "end": {
+            "line": 11,
+            "column": 5
+          }
+        },
+        "loc": {
+          "start": {
+            "line": 11,
+            "column": 13
+          },
+          "end": {
+            "line": 16,
+            "column": 5
+          }
+        },
+        "line": 11
+      }
+    },
+    "branchMap": {},
+    "s": {
+      "0": 2
+    },
+    "f": {
+      "0": 2
+    },
+    "b": {},
+    "_coverageSchema": "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    "hash": "d209e90230af077183d6794c2dc72aa2dfaded4d"
+  },
+  "C:\\Users\\Jason\\Documents\\sample-bootstrap-vue-fancy-table\\src\\components\\fancy-tables\\PageSizeSelect.vue": {
+    "path": "C:\\Users\\Jason\\Documents\\sample-bootstrap-vue-fancy-table\\src\\components\\fancy-tables\\PageSizeSelect.vue",
+    "statementMap": {
+      "0": {
+        "start": {
+          "line": 12,
+          "column": 4
+        },
+        "end": {
+          "line": 20,
+          "column": 6
+        }
+      }
+    },
+    "fnMap": {
+      "0": {
+        "name": "(anonymous_0)",
+        "decl": {
+          "start": {
+            "line": 11,
+            "column": 2
+          },
+          "end": {
+            "line": 11,
+            "column": 3
+          }
+        },
+        "loc": {
+          "start": {
+            "line": 11,
+            "column": 9
+          },
+          "end": {
+            "line": 21,
+            "column": 3
+          }
+        },
+        "line": 11
+      }
+    },
+    "branchMap": {},
+    "s": {
+      "0": 2
+    },
+    "f": {
+      "0": 2
+    },
     "b": {},
     "inputSourceMap": {
       "version": 3,
       "sources": [
-        "C:\\Users\\Jason\\Documents\\sample-bootstrap-vue-fancy-table\\src\\components\\Greetings.vue"
+        "C:\\Users\\Jason\\Documents\\sample-bootstrap-vue-fancy-table\\src\\components\\fancy-tables\\PageSizeSelect.vue"
       ],
       "names": [],
-      "mappings": ";;;;;;;;AAQA;AACA;AACA;AACA;AACA",
-      "file": "Greetings.vue",
+      "mappings": ";;;;;;;;AAQA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA",
+      "file": "PageSizeSelect.vue",
       "sourceRoot": "",
       "sourcesContent": [
-        "<template>\n  <section>\n    <h1 data-testid=\"title\">👋 Hello {{ name }}!</h1>\n    <p>This is your first component tested using browser-based component testing with Cypress + Vue ✌️🌲</p>\n  </section>\n</template>\n\n<script>\n  export default {\n    props: {\n      name: { type: String, default: 'world' }\n    }\n  }\n</script>\n\n<style scoped>\n  section {\n    font-family: \"Helvetica Neue\", sans-serif;\n  }\n</style>\n"
+        "<template>\r\n  <div class=\"page-size-select\">\r\n    Show\r\n    <b-form-select v-model=\"selected\" :options=\"options\"></b-form-select>\r\n    entries\r\n  </div>\r\n</template>\r\n<script>\r\nexport default {\r\n  name: \"page-size-select\",\r\n  data() {\r\n    return {\r\n      selected: 10,\r\n      options: [\r\n        { value: 10, text: \"10\" },\r\n        { value: 25, text: \"25\" },\r\n        { value: 50, text: \"50\" },\r\n        { value: 100, text: \"100\" },\r\n      ],\r\n    };\r\n  },\r\n};\r\n</script>\r\n<style scoped>\r\n.page-size-select {\r\n  display: flex;\r\n  align-items: center;\r\n}\r\n.page-size-select > select {\r\n  margin-left: 1rem;\r\n  margin-right: 1rem;\r\n  width: 5rem;\r\n}\r\n</style>"
       ]
     },
     "_coverageSchema": "1a1c01bbd47fc00a2c39e90264f33305004495a9",
-    "hash": "015187ac57643b34559f5fcf1400722305fb5be7"
+    "hash": "518f310251945133dfac667a51a5a8373899d5e1"
   }
 }
