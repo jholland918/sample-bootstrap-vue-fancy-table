@@ -6,6 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:e2e": "vue-cli-service test:e2e",
+    "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'",
     "test:components": "vue-cli-service test:components"
   },
   "dependencies": {
@@ -17,11 +18,13 @@
     "jspdf": "^2.2.0",
     "jspdf-autotable": "^3.5.13",
     "vue": "^2.6.11",
+    "vue-i18n": "^8.17.3",
     "xlsx": "^0.16.9"
   },
   "devDependencies": {
     "@babel/polyfill": "^7.11.5",
     "@cypress/vue": "*",
+    "@intlify/vue-i18n-loader": "^1.0.0",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-e2e-cypress": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
@@ -34,6 +37,7 @@
     "sass-loader": "^10.0.2",
     "vue-cli-plugin-bootstrap-vue": "~0.7.0",
     "vue-cli-plugin-cypress-experimental": "~1.2.0",
+    "vue-cli-plugin-i18n": "~1.0.1",
     "vue-template-compiler": "^2.6.11"
   }
 }
