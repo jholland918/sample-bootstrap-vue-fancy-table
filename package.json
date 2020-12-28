@@ -9,11 +9,15 @@
     "test:components": "vue-cli-service test:components"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/free-solid-svg-icons": "^5.15.1",
+    "@fortawesome/vue-fontawesome": "^2.0.2",
     "bootstrap-vue": "^2.17.3",
     "core-js": "^3.6.5",
     "jspdf": "^2.2.0",
     "jspdf-autotable": "^3.5.13",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "xlsx": "^0.16.9"
   },
   "devDependencies": {
     "@babel/polyfill": "^7.11.5",
