@@ -37,12 +37,8 @@ export default {
     },
     getData: {
       type: Function,
+      required: true
     },
-  },
-  data() {
-    return {
-      text: "",
-    };
   },
   methods: {
     onPdfClick() {
