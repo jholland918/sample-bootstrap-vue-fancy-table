@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1609195033717" clover="3.2.0">
-  <project timestamp="1609195033717" name="All files">
+<coverage generated="1609196124517" clover="3.2.0">
+  <project timestamp="1609196124517" name="All files">
     <metrics statements="46" coveredstatements="9" conditionals="4" coveredconditionals="0" methods="24" coveredmethods="4" elements="74" coveredelements="13" complexity="0" loc="46" ncloc="46" packages="2" files="6" classes="6"/>
     <package name="components.fancy-tables">
       <metrics statements="44" coveredstatements="7" conditionals="4" coveredconditionals="0" methods="24" coveredmethods="4"/>

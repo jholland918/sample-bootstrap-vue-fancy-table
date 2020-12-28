@@ -17,6 +17,11 @@ Vue.component('page-size-select', PageSizeSelect);
 Vue.component('search-input', SearchInput);
 Vue.component('export-buttons', ExportButtons);
 
+// Additional features:
+// https://datatables.net/examples/api/multi_filter.html
+// https://datatables.net/examples/api/multi_filter_select.html
+// https://datatables.net/examples/api/form.html
+// https://datatables.net/examples/api/regex.html
 describe('Base Table', () => {
     const items = [
         { isActive: true, age: 40, first_name: "John", last_name: "Smith", },
