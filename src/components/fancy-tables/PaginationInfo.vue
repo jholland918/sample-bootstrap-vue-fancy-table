@@ -10,7 +10,7 @@
 </i18n>
 
 <template>
-  <span>{{
+  <span class="pagination-info">{{
     $t("Showing {0} to {1} of {2} entries", [
       pageRowStart,
       pageRowEnd,
@@ -21,11 +21,20 @@
 
 <script>
 export default {
-  name: "PaginationInfo",
+  name: "pagination-info",
   props: {
-    currentPage: Number,
-    perPage: Number,
-    totalRows: Number,
+    currentPage: {
+      type: Number,
+      default: 1,
+    },
+    perPage: {
+      type: Number,
+      default: 10,
+    },
+    totalRows: {
+      type: Number,
+      default: 0,
+    },
   },
   computed: {
     pageRowStart: function () {
