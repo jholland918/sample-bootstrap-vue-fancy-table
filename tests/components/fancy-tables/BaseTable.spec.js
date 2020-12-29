@@ -21,16 +21,25 @@ import PaginationInfo from '@/components/fancy-tables/PaginationInfo';
 // https://datatables.net/examples/api/form.html
 // https://datatables.net/examples/api/regex.html
 describe('Base Table', () => {
-    const mountOptions = {
-        extensions: {
-            use: [VueI18n],
-            components: {
-                'base-table': BaseTable,
-                'page-size-select': PageSizeSelect,
-                'search-input': SearchInput,
-                'export-buttons': ExportButtons,
-                'pagination-info': PaginationInfo,
-            },
+    Vue.use(VueI18n);
+
+    const i18n = new VueI18n({
+        locale: 'en',
+        fallbackLocale: 'en',
+        silentFallbackWarn: true,
+        formatFallbackMessages: true,
+        silentTranslationWarn: true,
+        messages: {}
+    });
+
+    const extensions = {
+        use: [VueI18n],
+        components: {
+            'base-table': { i18n, ...BaseTable },
+            'page-size-select': { i18n, ...PageSizeSelect },
+            'search-input': { i18n, ...SearchInput },
+            'export-buttons': { i18n, ...ExportButtons },
+            'pagination-info': { i18n, ...PaginationInfo },
         },
     };
 
@@ -139,12 +148,14 @@ describe('Base Table', () => {
                     items: items
                 }
             },
-        }, mountOptions);
+        }, { extensions });
 
         cy.get('.export-buttons').should('be.visible');
     });
 
     it.only('should render the pagination info', () => {
+
+
         mount({
             template: `<base-table :items="items">
                 <div slot="default" slot-scope="scope">
@@ -157,7 +168,7 @@ describe('Base Table', () => {
                     items: items
                 }
             }
-        }, mountOptions);
+        }, { extensions });
 
         cy.get('.pagination-info').should('be.visible');
     });
