@@ -47,8 +47,18 @@ describe('Base Table', () => {
         { isActive: true, age: 40, first_name: "John", last_name: "Smith", },
         { isActive: false, age: 21, first_name: "Larsen", last_name: "Shaw" },
         { isActive: false, age: 89, first_name: "Geneva", last_name: "Wilson" },
-        { isActive: true, age: 38, first_name: "Jami", last_name: "Carney" },
     ];
+
+    const getManyItems = () => {
+        // Get ASCII table with chars A thru Z.
+        let items = [];
+        let sequence = 0;
+        for(let i = 65; i <= 90; i++) {
+            sequence++;
+            items.push({ sequence: sequence, char: String.fromCharCode(i)});
+        }
+        return items;
+    };
 
     it('should render the table', () => {
         mount({
@@ -153,7 +163,7 @@ describe('Base Table', () => {
         cy.get('.export-buttons').should('be.visible');
     });
 
-    it.only('should render the pagination info', () => {
+    it('should render the pagination info', () => {
 
 
         mount({
@@ -166,6 +176,50 @@ describe('Base Table', () => {
             data: function () {
                 return {
                     items: items
+                }
+            }
+        }, { extensions });
+
+        cy.get('.pagination-info').should('be.visible');
+    });
+
+    it.only('should render all page controls', () => {
+
+
+        mount({
+            template: `<base-table :items="items">
+                <div slot="default" slot-scope="scope">
+                    <page-size-select></page-size-select>
+                    <b-table :items="scope.items" :per-page="perPage.selected" :current-page="currentPage"></b-table>
+                    <pagination-info></pagination-info>
+                    <b-pagination
+                      v-model="currentPage"
+                      :total-rows="totalRows"
+                      :per-page="perPage.selected"
+                      aria-controls="my-table"
+                    ></b-pagination>
+                </div>
+            </base-table>`,
+            data: function () {
+                return {                    
+                    items: getManyItems(),
+
+                    currentPage: 1,
+                    perPage: {
+                        selected: 10,
+                        options: [
+                            { text: '10', value: 10 },
+                            { text: '25', value: 25 },
+                            { text: '50', value: 50 },
+                            { text: '100', value: 100 }
+                        ]
+                    }
+                }
+            },
+            computed: {
+                // Set the initial number of items for pagination
+                totalRows: function () {
+                    return this.items.length;
                 }
             }
         }, { extensions });
