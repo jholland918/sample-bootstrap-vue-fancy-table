@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 import Vue from 'vue';
+import VueI18n from 'vue-i18n';
 import { mount } from '@cypress/vue';
 import '@/plugins/bootstrap-vue';
 import '@/plugins/font-awesome';
@@ -12,10 +13,7 @@ import BaseTable from '@/components/fancy-tables/base-table';
 import PageSizeSelect from '@/components/fancy-tables/PageSizeSelect';
 import SearchInput from '@/components/fancy-tables/SearchInput';
 import ExportButtons from '@/components/fancy-tables/ExportButtons';
-Vue.component('base-table', BaseTable);
-Vue.component('page-size-select', PageSizeSelect);
-Vue.component('search-input', SearchInput);
-Vue.component('export-buttons', ExportButtons);
+import PaginationInfo from '@/components/fancy-tables/PaginationInfo';
 
 // Additional features:
 // https://datatables.net/examples/api/multi_filter.html
@@ -23,6 +21,19 @@ Vue.component('export-buttons', ExportButtons);
 // https://datatables.net/examples/api/form.html
 // https://datatables.net/examples/api/regex.html
 describe('Base Table', () => {
+    const mountOptions = {
+        extensions: {
+            use: [VueI18n],
+            components: {
+                'base-table': BaseTable,
+                'page-size-select': PageSizeSelect,
+                'search-input': SearchInput,
+                'export-buttons': ExportButtons,
+                'pagination-info': PaginationInfo,
+            },
+        },
+    };
+
     const items = [
         { isActive: true, age: 40, first_name: "John", last_name: "Smith", },
         { isActive: false, age: 21, first_name: "Larsen", last_name: "Shaw" },
@@ -115,7 +126,7 @@ describe('Base Table', () => {
         cy.get('.search-input').should('be.visible');
     });
 
-    it.only('should render the export buttons', () => {
+    it('should render the export buttons', () => {
         mount({
             template: `<base-table :items="items">
                 <div slot="default" slot-scope="scope">
@@ -128,8 +139,26 @@ describe('Base Table', () => {
                     items: items
                 }
             },
-        });
+        }, mountOptions);
 
         cy.get('.export-buttons').should('be.visible');
+    });
+
+    it.only('should render the pagination info', () => {
+        mount({
+            template: `<base-table :items="items">
+                <div slot="default" slot-scope="scope">
+                    <b-table :items="scope.items"></b-table>
+                    <pagination-info></pagination-info>
+                </div>
+            </base-table>`,
+            data: function () {
+                return {
+                    items: items
+                }
+            }
+        }, mountOptions);
+
+        cy.get('.pagination-info').should('be.visible');
     });
 });
