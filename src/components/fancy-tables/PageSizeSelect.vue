@@ -1,23 +1,61 @@
+<i18n>
+    {
+        "es": {
+            "Show": "Mostrar",
+            "entries": "entradas"
+        },
+        "fr": {
+            "Show": "Afficher",
+            "entries": "entrées"
+        }
+    }
+</i18n>
 <template>
   <div class="page-size-select">
-    Show
-    <b-form-select v-model="selected" :options="options"></b-form-select>
-    entries
+    {{ $t("Show") }}
+    <b-form-select
+      v-model="mutableValue"
+      :options="options"
+      v-on:input="$emit('input', mutableValue)"
+    ></b-form-select>
+    {{ $t("entries") }}
   </div>
 </template>
 <script>
 export default {
   name: "page-size-select",
+  props: {
+    value: {
+      type: Number,
+      default: 10,
+    },
+    sizes: {
+      type: Array,
+      default: function () {
+        return [5, 10, 25, 50, 100];
+      },
+    },
+  },
   data() {
     return {
-      selected: 10,
-      options: [
-        { value: 10, text: "10" },
-        { value: 25, text: "25" },
-        { value: 50, text: "50" },
-        { value: 100, text: "100" },
-      ],
+      mutableValue: this.value,
     };
+  },
+  computed: {
+    options: function () {
+      let sizes =
+        this.sizes && this.sizes.length ? this.sizes : [5, 10, 25, 50, 100];
+
+      let options = sizes.map((s) => {
+        return { value: Number(s), text: s };
+      });
+
+      if (!options.find((o) => o.value == this.mutableValue)) {
+        this.mutableValue = options[0].value;
+      }
+
+      return options;
+    },
   },
 };
 </script>

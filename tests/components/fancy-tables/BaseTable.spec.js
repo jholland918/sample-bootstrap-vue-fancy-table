@@ -189,13 +189,13 @@ describe('Base Table', () => {
         mount({
             template: `<base-table :items="items">
                 <div slot="default" slot-scope="scope">
-                    <page-size-select></page-size-select>
-                    <b-table :items="scope.items" :per-page="perPage.selected" :current-page="currentPage"></b-table>
-                    <pagination-info></pagination-info>
+                    <page-size-select v-model="perPage"></page-size-select>
+                    <b-table :items="scope.items" :per-page="perPage" :current-page="currentPage"></b-table>
+                    <pagination-info v-bind:current-page="currentPage" v-bind:per-page="perPage" v-bind:total-rows="totalRows"></pagination-info>
                     <b-pagination
                       v-model="currentPage"
                       :total-rows="totalRows"
-                      :per-page="perPage.selected"
+                      :per-page="perPage"
                       aria-controls="my-table"
                     ></b-pagination>
                 </div>
@@ -205,15 +205,7 @@ describe('Base Table', () => {
                     items: getManyItems(),
 
                     currentPage: 1,
-                    perPage: {
-                        selected: 10,
-                        options: [
-                            { text: '10', value: 10 },
-                            { text: '25', value: 25 },
-                            { text: '50', value: 50 },
-                            { text: '100', value: 100 }
-                        ]
-                    }
+                    perPage: 10
                 }
             },
             computed: {
