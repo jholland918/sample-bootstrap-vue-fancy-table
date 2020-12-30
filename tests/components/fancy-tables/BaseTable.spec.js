@@ -127,12 +127,12 @@ describe('Base Table', () => {
         cy.get('.page-link').contains('2').should('be.visible');
     });
 
-    it('should render the search input', () => {
+    it.only('should render the search input', () => {
         mount({
             template: `<base-table :items="items">
-                <div slot="default" slot-scope="{ items }">
-                    <search-input></search-input>
-                    <b-table :items="items"></b-table>
+                <div slot="default" slot-scope="scope">
+                    <search-input v-model="scope.filter.value"></search-input>
+                    <b-table :items="scope.items" :filter="scope.filter.value"></b-table>
                 </div>
             </base-table>`,
             data: function () {
@@ -140,7 +140,7 @@ describe('Base Table', () => {
                     items: items
                 }
             }
-        });
+        }, { extensions });
 
         cy.get('.search-input').should('be.visible');
     });
@@ -183,9 +183,7 @@ describe('Base Table', () => {
         cy.get('.pagination-info').should('be.visible');
     });
 
-    it.only('should render all page controls', () => {
-
-
+    it('should render all page controls', () => {
         mount({
             template: `<base-table v-bind:items="items" current-page="1" per-page="10">
                 <div slot="default" slot-scope="scope">

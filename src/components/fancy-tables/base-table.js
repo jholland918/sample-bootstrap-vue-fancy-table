@@ -22,6 +22,9 @@ export default {
             /** Object wrapper for perPage value to retain reactivity within $scopedSlots. */
             perPageObj: {
                 value: Number(this.perPage)
+            },
+            filterObj: {
+                value: ''
             }
         };
     },
@@ -37,11 +40,12 @@ export default {
             totalRows: this.totalRows,
             currentPage: this.currentPageObj,
             perPage: this.perPageObj,
+            filter: this.filterObj
         });
     },
     mounted() {
         this.table = this.$children.find(c => c.$el.classList.contains("b-table"));
-        console.log('base-table mounted', this.table);        
+        console.log('base-table mounted', this.table);
     },
     methods: {
         /**
