@@ -187,33 +187,24 @@ describe('Base Table', () => {
 
 
         mount({
-            template: `<base-table :items="items">
+            template: `<base-table v-bind:items="items" :current-page="1" :per-page="10">
                 <div slot="default" slot-scope="scope">
-                    <page-size-select v-model="perPage"></page-size-select>
-                    <b-table :items="scope.items" :per-page="perPage" :current-page="currentPage"></b-table>
-                    <pagination-info v-bind:current-page="currentPage" v-bind:per-page="perPage" v-bind:total-rows="totalRows"></pagination-info>
+                {{scope.poop}}
+                    <page-size-select v-model="scope.perPage.value"></page-size-select>
+                    <b-table v-bind:items="scope.items" v-bind:per-page="scope.perPage.value" v-bind:current-page="scope.currentPage.value"></b-table>
+                    <pagination-info v-bind:current-page="scope.currentPage.value" v-bind:per-page="scope.perPage.value" v-bind:total-rows="scope.totalRows"></pagination-info>
                     <b-pagination
-                      v-model="currentPage"
-                      :total-rows="totalRows"
-                      :per-page="perPage"
-                      aria-controls="my-table"
+                      v-model="scope.currentPage.value"
+                      v-bind:total-rows="scope.totalRows"
+                      v-bind:per-page="scope.perPage.value"
                     ></b-pagination>
                 </div>
             </base-table>`,
             data: function () {
                 return {                    
                     items: getManyItems(),
-
-                    currentPage: 1,
-                    perPage: 10
                 }
             },
-            computed: {
-                // Set the initial number of items for pagination
-                totalRows: function () {
-                    return this.items.length;
-                }
-            }
         }, { extensions });
 
         cy.get('.pagination-info').should('be.visible');

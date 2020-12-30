@@ -1,23 +1,47 @@
 export default {
     name: 'base-table',
     props: {
-        exampleProp: {
-            type: String,
-        },
         items: {
             type: Array,
+        },
+        currentPage: {
+            type: [Number, String],
+            default: 1,
+        },
+        perPage: {
+            type: [Number, String],
+            default: 10,
+        },
+    },
+    data() {
+        return {
+            /** Object wrapper for currentPage value to retain reactivity within $scopedSlots. */
+            currentPageObj: {
+                value: Number(this.currentPage)
+            },
+            /** Object wrapper for perPage value to retain reactivity within $scopedSlots. */
+            perPageObj: {
+                value: Number(this.perPage)
+            }
+        };
+    },
+    computed: {
+        totalRows: function () {
+            return this.items.length;
         }
     },
     render() {
         return this.$scopedSlots.default({
             getData: this.getData,
             items: this.items,
-            contextChanged: this.contextChanged
+            totalRows: this.totalRows,
+            currentPage: this.currentPageObj,
+            perPage: this.perPageObj,
         });
     },
     mounted() {
         this.table = this.$children.find(c => c.$el.classList.contains("b-table"));
-        console.log('base-table mounted', this.table);
+        console.log('base-table mounted', this.table);        
     },
     methods: {
         /**
@@ -32,7 +56,7 @@ export default {
          */
         getData() {
             console.log('table', this.table);
-            
+
             let fields = this.table.computedFields;
             let items = (this.table.sortedItems || this.table.filteredItems || this.table.localItems || []).slice();
 
