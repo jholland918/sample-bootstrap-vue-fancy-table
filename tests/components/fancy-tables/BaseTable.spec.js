@@ -221,8 +221,6 @@ describe('Base Table', () => {
                             <b-form-input v-model="scope.filterModel[data.column]" placeholder="Searchie" size="sm" autocomplete="off"></b-form-input>
                         </template>
                     </b-table>
-                    <button @click="scope.clicky">clicky</button>
-                    scope.columnFilter: {{scope.columnFilter}}
                 </div>
             </base-table>`,
             data: function () {

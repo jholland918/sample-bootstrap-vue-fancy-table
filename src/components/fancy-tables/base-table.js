@@ -35,9 +35,7 @@ export default {
             return this.items.length;
         },
         columnFilter: function () {
-            console.log('---filter2---');
-
-            if (!Object.values(this.filterModel).some(v => v)){
+            if (!Object.values(this.filterModel).some(v => v)) {
                 return null;
             }
 
@@ -55,33 +53,44 @@ export default {
             filterModel: this.filterModel,
             columnFilterFunc: this.columnFilterFunc,
             columnFilter: this.columnFilter,
-            clicky: this.clicky
         });
     },
     mounted() {
         this.table = this.$children.find(c => c.$el.classList.contains("b-table"));
-
-        // this.table.computedFields.forEach((computedField) => {
-        //     this.$set(this.columnFilters, computedField.key, '');
-        // });
-
         console.log('base-table mounted', this.table);
     },
     methods: {
-        clicky() {
-            //this.columnFilters.push('afdfdddddddddd');
-            //this.columnFilters = [...this.columnFilters];
-            //this.columnFilters['q'] = 'qq';
-        },
-        //the original item row record data object. Treat this argument as read-only.
-        //the content of the filter prop (could be a string, RegExp, array, or object)
-        columnFilterFunc(row, filter) {
-            console.log('row', row);
-            console.log('filter', filter);
+        columnFilterFunc(item, criteria) {
+            for (const property in criteria) {
+                if (!criteria.hasOwnProperty(property)) {
+                    continue;
+                }
 
-            return true; // true if row matches filter criteria, else false...
+                let criterion = criteria[property];
 
+                // We can't just check for falsy (eg `!criterion`) before skipping because there are some falsy values that might be legitimate filter criteria.
+                if (criterion === '' || criterion === null || criterion === undefined) {
+                    continue;
+                }
+
+                if (!item.hasOwnProperty(property)) {
+                    return false;
+                }
+
+                let value = item[property];
+
+                if (criterion === value) {
+                    continue;
+                }
+
+                if (String(value).toLowerCase().indexOf(String(criterion).toLowerCase()) === -1) {
+                    return false;
+                }
+            }
+
+            return true; // if we got here then we should have a match
         },
+
         /**
          * Returns table data for export using any applied user sorting and filtering.
          * 
