@@ -127,7 +127,7 @@ describe('Base Table', () => {
         cy.get('.page-link').contains('2').should('be.visible');
     });
 
-    it.only('should render the search input', () => {
+    it('should render the search input', () => {
         mount({
             template: `<base-table :items="items">
                 <div slot="default" slot-scope="scope">
@@ -205,5 +205,33 @@ describe('Base Table', () => {
         }, { extensions });
 
         cy.get('.pagination-info').should('be.visible');
+    });
+
+    it.only('should render column search inputs', () => {
+        mount({
+            template: `<base-table :items="items">
+                <div slot="default" slot-scope="scope">
+                    <b-table :items="scope.items" :filter="scope.columnFilter" :filter-function="scope.columnFilterFunc">
+                        <template #head(age)="data">
+                            {{ data.label }}
+                            <b-form-input v-model="scope.filterModel[data.column]" placeholder="Searchy" size="sm" autocomplete="off"></b-form-input>
+                        </template>
+                        <template #head()="data">
+                            {{ data.label }}
+                            <b-form-input v-model="scope.filterModel[data.column]" placeholder="Searchie" size="sm" autocomplete="off"></b-form-input>
+                        </template>
+                    </b-table>
+                    <button @click="scope.clicky">clicky</button>
+                    scope.columnFilter: {{scope.columnFilter}}
+                </div>
+            </base-table>`,
+            data: function () {
+                return {
+                    items: items
+                }
+            }
+        }, { extensions });
+
+        //cy.get('.search-input').should('be.visible');
     });
 });

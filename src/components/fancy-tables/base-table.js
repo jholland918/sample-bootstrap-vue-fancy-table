@@ -25,12 +25,23 @@ export default {
             },
             filterObj: {
                 value: ''
-            }
+            },
+            /** Object indexed by field key with filter text for each column */
+            filterModel: {},
         };
     },
     computed: {
         totalRows: function () {
             return this.items.length;
+        },
+        columnFilter: function () {
+            console.log('---filter2---');
+
+            if (!Object.values(this.filterModel).some(v => v)){
+                return null;
+            }
+
+            return this.filterModel;
         }
     },
     render() {
@@ -40,14 +51,37 @@ export default {
             totalRows: this.totalRows,
             currentPage: this.currentPageObj,
             perPage: this.perPageObj,
-            filter: this.filterObj
+            filter: this.filterObj,
+            filterModel: this.filterModel,
+            columnFilterFunc: this.columnFilterFunc,
+            columnFilter: this.columnFilter,
+            clicky: this.clicky
         });
     },
     mounted() {
         this.table = this.$children.find(c => c.$el.classList.contains("b-table"));
+
+        // this.table.computedFields.forEach((computedField) => {
+        //     this.$set(this.columnFilters, computedField.key, '');
+        // });
+
         console.log('base-table mounted', this.table);
     },
     methods: {
+        clicky() {
+            //this.columnFilters.push('afdfdddddddddd');
+            //this.columnFilters = [...this.columnFilters];
+            //this.columnFilters['q'] = 'qq';
+        },
+        //the original item row record data object. Treat this argument as read-only.
+        //the content of the filter prop (could be a string, RegExp, array, or object)
+        columnFilterFunc(row, filter) {
+            console.log('row', row);
+            console.log('filter', filter);
+
+            return true; // true if row matches filter criteria, else false...
+
+        },
         /**
          * Returns table data for export using any applied user sorting and filtering.
          * 
