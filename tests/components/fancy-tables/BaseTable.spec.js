@@ -187,9 +187,8 @@ describe('Base Table', () => {
 
 
         mount({
-            template: `<base-table v-bind:items="items" :current-page="1" :per-page="10">
+            template: `<base-table v-bind:items="items" current-page="1" per-page="10">
                 <div slot="default" slot-scope="scope">
-                {{scope.poop}}
                     <page-size-select v-model="scope.perPage.value"></page-size-select>
                     <b-table v-bind:items="scope.items" v-bind:per-page="scope.perPage.value" v-bind:current-page="scope.currentPage.value"></b-table>
                     <pagination-info v-bind:current-page="scope.currentPage.value" v-bind:per-page="scope.perPage.value" v-bind:total-rows="scope.totalRows"></pagination-info>
