@@ -1215,11 +1215,11 @@ describe('Base Table', () => {
                   </template>
                         <template #head(isActive)="data">
                             {{ data.label }}
-                            <b-form-select v-model="data.field.filter.model" placeholder="Searchy" size="sm" :options="data.field.filter.selectOptions"></b-form-select>
+                            <b-form-select v-model="data.field.filter.model" size="sm" :options="data.field.filter.selectOptions"></b-form-select>
                         </template>
                         <template #head(age)="data">
                             {{ data.label }}
-                            <b-form-select v-model="data.field.filter.model" placeholder="Searchy" size="sm" :options="data.field.filter.selectOptions"></b-form-select>
+                            <b-form-select v-model="data.field.filter.model" size="sm" :options="data.field.filter.selectOptions"></b-form-select>
                         </template>
                         <template #head()="data">
                             {{ data.label }}
