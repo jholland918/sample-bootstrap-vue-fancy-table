@@ -212,20 +212,25 @@ describe('Base Table', () => {
             template: `<base-table :items="items">
                 <div slot="default" slot-scope="scope">
                     <b-table :items="scope.items" :filter="scope.columnFilter" :filter-function="scope.columnFilterFunc">
+                        <template #head(isActive)="data">
+                            {{ data.label }}
+                            <b-form-select v-model="scope.columnFilterModel[data.column]" placeholder="Searchy" size="sm" :options="[{ text: 'All', value: null }, true, false]"></b-form-select>
+                        </template>
                         <template #head(age)="data">
                             {{ data.label }}
-                            <b-form-input v-model="scope.filterModel[data.column]" placeholder="Searchy" size="sm" autocomplete="off"></b-form-input>
+                            <b-form-select v-model="scope.columnFilterModel[data.column]" placeholder="Searchy" size="sm" :options="[{ text: 'All', value: null }]"></b-form-select>
                         </template>
                         <template #head()="data">
                             {{ data.label }}
-                            <b-form-input v-model="scope.filterModel[data.column]" placeholder="Searchie" size="sm" autocomplete="off"></b-form-input>
+                            <b-form-input v-model="scope.columnFilterModel[data.column]" placeholder="Searchie" size="sm" autocomplete="off"></b-form-input>
                         </template>
                     </b-table>
                 </div>
             </base-table>`,
             data: function () {
                 return {
-                    items: items
+                    items: items,
+                    selected: ''
                 }
             }
         }, { extensions });

@@ -27,7 +27,7 @@ export default {
                 value: ''
             },
             /** Object indexed by field key with filter text for each column */
-            filterModel: {},
+            columnFilterModel: {},
         };
     },
     computed: {
@@ -35,11 +35,14 @@ export default {
             return this.items.length;
         },
         columnFilter: function () {
-            if (!Object.values(this.filterModel).some(v => v)) {
+            if (!Object.values(this.columnFilterModel).some(v => {
+                // Intentionally skipping empty strings (""), nulls, undefined, and NaN values because we don't filter on those.
+                return v || v === false || v === 0;
+            })) {
                 return null;
             }
 
-            return this.filterModel;
+            return this.columnFilterModel;
         }
     },
     render() {
@@ -50,17 +53,23 @@ export default {
             currentPage: this.currentPageObj,
             perPage: this.perPageObj,
             filter: this.filterObj,
-            filterModel: this.filterModel,
-            columnFilterFunc: this.columnFilterFunc,
             columnFilter: this.columnFilter,
+            columnFilterModel: this.columnFilterModel,
+            columnFilterFunc: this.columnFilterFunc,
         });
     },
     mounted() {
         this.table = this.$children.find(c => c.$el.classList.contains("b-table"));
+
+         this.table.computedFields.forEach((field) => {
+             this.$set(this.columnFilterModel, field.key, null);
+         });
+
         console.log('base-table mounted', this.table);
     },
     methods: {
         columnFilterFunc(item, criteria) {
+
             for (const property in criteria) {
                 if (!criteria.hasOwnProperty(property)) {
                     continue;
