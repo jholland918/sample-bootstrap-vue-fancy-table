@@ -1204,11 +1204,11 @@ describe('Base Table', () => {
         cy.get('.pagination-info').should('be.visible');
     });
 
-    it('should render column search inputs', () => {
+    it.only('should render column search inputs', () => {
         mount({
-            template: `<base-table :items="items" :fields="fields">
+            template: `<base-table>
                 <div slot="default" slot-scope="scope">
-                    <b-table :items="scope.items" :fields="scope.fields" :filter="scope.columnFilter" :filter-function="scope.columnFilterFunc" :busy="scope.isBusy">
+                    <b-table :items="items" :fields="fields" :filter="scope.columnFilter" :filter-function="scope.columnFilterFunc">
                     <template #table-busy>
                     <div class="text-center text-danger my-2">
                       <b-spinner class="align-middle"></b-spinner>
@@ -1267,7 +1267,7 @@ describe('Base Table', () => {
         //cy.get('.search-input').should('be.visible');
     });
 
-    it.only('should ..?', () => {
+    it('should ..?', () => {
         mount({
             template: `<base-table2 :items="items" :fields="fields">
                 <div slot="default" slot-scope="scope">

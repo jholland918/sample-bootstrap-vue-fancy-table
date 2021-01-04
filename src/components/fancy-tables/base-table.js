@@ -1,12 +1,6 @@
 export default {
     name: 'base-table',
     props: {
-        fields: {
-            type: Array,
-        },
-        items: {
-            type: Array,
-        },
         currentPage: {
             type: [Number, String],
             default: 1,
@@ -18,6 +12,7 @@ export default {
     },
     data() {
         return {
+            table: null,
             /** Object wrapper for currentPage value to retain reactivity within $scopedSlots. */
             currentPageObj: {
                 value: Number(this.currentPage)
@@ -29,15 +24,18 @@ export default {
             filterObj: {
                 value: ''
             },
-            isBusy: false
         };
     },
     computed: {
         totalRows: function () {
-            return this.items.length;
+            return this.table ? (this.table.filteredItems || this.table.localItems || []).length : 0;
         },
         columnFilter: function () {
-            let fields = this.fields.filter(f => {
+            if (!this.table) {
+                return null;
+            }
+
+            let fields = this.table.computedFields.filter(f => {
                 // Intentionally skipping empty strings (""), nulls, undefined, and NaN values because we don't filter on those.
                 return f.filter.model || f.filter.model === false || f.filter.model === 0;
             });
@@ -48,9 +46,6 @@ export default {
     render() {
         return this.$scopedSlots.default({
             getData: this.getData,
-            items: this.items,
-            fields: this.fields,
-            isBusy: this.isBusy,
             totalRows: this.totalRows,
             currentPage: this.currentPageObj,
             perPage: this.perPageObj,
@@ -60,6 +55,7 @@ export default {
         });
     },
     mounted() {
+        console.log('this.$children', this.$children);
         this.table = this.$children.find(c => c.$el.classList.contains("b-table"));
         console.log('base-table mounted', this.table);
     },
