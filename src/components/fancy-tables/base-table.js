@@ -55,8 +55,7 @@ export default {
         });
     },
     mounted() {
-        console.log('this.$children', this.$children);
-        this.table = this.$children.find(c => c.$el.classList.contains("b-table"));
+        this.table = this.$children.find(c => c.$vnode && c.$vnode.componentOptions.tag == "b-table");
         console.log('base-table mounted', this.table);
     },
     methods: {

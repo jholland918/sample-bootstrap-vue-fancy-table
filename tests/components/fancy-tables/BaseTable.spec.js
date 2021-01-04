@@ -10,7 +10,6 @@ import { faFileCsv, faFileExcel, faFilePdf, faPrint, faFileAlt } from '@fortawes
 fontawesome.add(faFileCsv, faFileExcel, faFilePdf, faPrint, faFileAlt);
 
 import BaseTable from '@/components/fancy-tables/base-table';
-import BaseTable2 from '@/components/fancy-tables/base-table2';
 import PageSizeSelect from '@/components/fancy-tables/PageSizeSelect';
 import SearchInput from '@/components/fancy-tables/SearchInput';
 import ExportButtons from '@/components/fancy-tables/ExportButtons';
@@ -37,7 +36,6 @@ describe('Base Table', () => {
         use: [VueI18n],
         components: {
             'base-table': { i18n, ...BaseTable },
-            'base-table2': { i18n, ...BaseTable2 },
             'page-size-select': { i18n, ...PageSizeSelect },
             'search-input': { i18n, ...SearchInput },
             'export-buttons': { i18n, ...ExportButtons },
@@ -1260,62 +1258,6 @@ describe('Base Table', () => {
                     ],
                     items: items,
                     selected: ''
-                }
-            }
-        }, { extensions });
-
-        //cy.get('.search-input').should('be.visible');
-    });
-
-    it('should ..?', () => {
-        mount({
-            template: `<base-table2 :items="items" :fields="fields">
-                <div slot="default" slot-scope="scope">
-                    <b-table ref="table" :items="scope.items" :fields="scope.fields" :filter="flabber" :filter-function="scope.columnFilterFunc">
-                        <template #head(isActive)="data">
-                            {{ data.label }}
-                            <b-form-select v-model="data.field.filter.model" size="sm" :options="data.field.filter.selectOptions"></b-form-select>
-                        </template>
-                        <template #head(age)="data">
-                            {{ data.label }}
-                            <b-form-select v-model="data.field.filter.model" size="sm" :options="data.field.filter.selectOptions"></b-form-select>
-                        </template>
-                        <template #head()="data">
-                            {{ data.label }}
-                            <b-form-input v-model="data.field.filter.model" placeholder="Searchie" size="sm" autocomplete="off" @input="scope.onFiltersChange"></b-form-input>
-                        </template>
-                    </b-table>
-                </div>
-            </base-table2>`,
-            data: function () {
-                return {
-                    fields: [
-                        {
-                            key: 'isActive',
-                            filter: { 
-                                model: null,
-                                type: 'select',
-                                selectOptions: [{ text: 'All', value: null }, true, false]
-                            }
-                        },
-                        {
-                            key: 'age',
-                            filter: { 
-                                model: null,
-                                type: 'select',
-                                selectOptions: [{ text: 'All', value: null }, ...Array.from(new Set(items.map(i => i.age))).sort()]
-                            }
-                        },
-                        {
-                            key: 'first_name',
-                            filter: { model: null }
-                        },
-                        {
-                            key: 'last_name',
-                            filter: { model: null }
-                        },
-                    ],
-                    items: items,
                 }
             }
         }, { extensions });
