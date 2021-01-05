@@ -1055,10 +1055,10 @@ describe('Base Table', () => {
         return items;
     };
 
-    it('should render the table', () => {
+    it.only('should render the table', () => {
         mount({
-            template: `<base-table :items="items">
-                <div slot="default" slot-scope="{ items }">
+            template: `<base-table>
+                <div slot="default" slot-scope="scope">
                     <b-table :items="items"></b-table>
                 </div>
             </base-table>`,
@@ -1067,15 +1067,15 @@ describe('Base Table', () => {
                     items: items
                 }
             }
-        });
+        }, { extensions });
 
         cy.get('table').should('be.visible');
     });
 
     it('should render the page size select', () => {
         mount({
-            template: `<base-table :items="items">
-                <div slot="default" slot-scope="{ items }">
+            template: `<base-table>
+                <div slot="default" slot-scope="scope">
                     <page-size-select></page-size-select>
                     <b-table :items="items"></b-table>
                 </div>
@@ -1085,7 +1085,7 @@ describe('Base Table', () => {
                     items: items
                 }
             }
-        });
+        }, { extensions });
 
         cy.get('.page-size-select').should('be.visible');
         cy.get('.page-size-select > select').should('have.value', 10);
@@ -1093,8 +1093,8 @@ describe('Base Table', () => {
 
     it('should render the pagination', () => {
         mount({
-            template: `<base-table :items="items">
-                <div slot="default" slot-scope="{ items }">
+            template: `<base-table>
+                <div slot="default" slot-scope="scope">
                     <b-table :items="items" :per-page="perPage" :current-page="currentPage"></b-table>
                     <b-pagination
                       v-model="currentPage"
@@ -1116,7 +1116,7 @@ describe('Base Table', () => {
                     return this.items.length
                 }
             }
-        });
+        }, { extensions });
 
         cy.get('.pagination.b-pagination').should('be.visible');
         cy.get('.page-link').contains('2').should('be.visible');
@@ -1124,10 +1124,10 @@ describe('Base Table', () => {
 
     it('should render the search input', () => {
         mount({
-            template: `<base-table :items="items">
+            template: `<base-table>
                 <div slot="default" slot-scope="scope">
                     <search-input v-model="scope.filter.value"></search-input>
-                    <b-table :items="scope.items" :filter="scope.filter.value"></b-table>
+                    <b-table :items="items" :filter="scope.filter.value"></b-table>
                 </div>
             </base-table>`,
             data: function () {
@@ -1142,10 +1142,10 @@ describe('Base Table', () => {
 
     it('should render the export buttons', () => {
         mount({
-            template: `<base-table :items="items">
+            template: `<base-table>
                 <div slot="default" slot-scope="scope">
                     <export-buttons v-bind:get-data="scope.getData"></export-buttons>
-                    <b-table :items="scope.items"></b-table>
+                    <b-table :items="items"></b-table>
                 </div>
             </base-table>`,
             data: function () {
@@ -1159,12 +1159,10 @@ describe('Base Table', () => {
     });
 
     it('should render the pagination info', () => {
-
-
         mount({
-            template: `<base-table :items="items">
+            template: `<base-table>
                 <div slot="default" slot-scope="scope">
-                    <b-table :items="scope.items"></b-table>
+                    <b-table :items="items"></b-table>
                     <pagination-info></pagination-info>
                 </div>
             </base-table>`,
@@ -1178,12 +1176,12 @@ describe('Base Table', () => {
         cy.get('.pagination-info').should('be.visible');
     });
 
-    it('should render all page controls', () => {
+    it('should render all paging controls', () => {
         mount({
-            template: `<base-table v-bind:items="items" current-page="1" per-page="10">
+            template: `<base-table current-page="1" per-page="10">
                 <div slot="default" slot-scope="scope">
                     <page-size-select v-model="scope.perPage.value"></page-size-select>
-                    <b-table v-bind:items="scope.items" v-bind:per-page="scope.perPage.value" v-bind:current-page="scope.currentPage.value"></b-table>
+                    <b-table v-bind:items="items" v-bind:per-page="scope.perPage.value" v-bind:current-page="scope.currentPage.value"></b-table>
                     <pagination-info v-bind:current-page="scope.currentPage.value" v-bind:per-page="scope.perPage.value" v-bind:total-rows="scope.totalRows"></pagination-info>
                     <b-pagination
                       v-model="scope.currentPage.value"
@@ -1202,7 +1200,7 @@ describe('Base Table', () => {
         cy.get('.pagination-info').should('be.visible');
     });
 
-    it.only('should render column search inputs', () => {
+    it('should render column search inputs', () => {
         mount({
             template: `<base-table>
                 <div slot="default" slot-scope="scope">

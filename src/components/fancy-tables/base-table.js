@@ -37,7 +37,7 @@ export default {
 
             let fields = this.table.computedFields.filter(f => {
                 // Intentionally skipping empty strings (""), nulls, undefined, and NaN values because we don't filter on those.
-                return f.filter.model || f.filter.model === false || f.filter.model === 0;
+                return f.filter && (f.filter.model || f.filter.model === false || f.filter.model === 0);
             });
 
             return fields.length ? fields : null;
