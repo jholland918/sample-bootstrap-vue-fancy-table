@@ -356,5 +356,109 @@ describe('Base Table', () => {
         cy.get('tbody').find('tr').should('have.length', 1); // Should be Lola Ziems
     });
 
+    it('should update paging controls when global filtering is applied', () => {
+        mount({
+            template: `<base-table current-page="1" per-page="10">
+                <div slot="default" slot-scope="scope">
+                    <search-input v-model="scope.filter.value" data-cy="search-input"></search-input>
+                    <page-size-select v-model="scope.perPage.value"></page-size-select>
+                    <b-table v-bind:items="items" v-bind:per-page="scope.perPage.value" v-bind:current-page="scope.currentPage.value" :filter="scope.filter.value"></b-table>
+                    <pagination-info v-bind:current-page="scope.currentPage.value" v-bind:per-page="scope.perPage.value" v-bind:total-rows="scope.totalRows"></pagination-info>
+                    <b-pagination
+                      v-model="scope.currentPage.value"
+                      v-bind:total-rows="scope.totalRows"
+                      v-bind:per-page="scope.perPage.value"
+                    ></b-pagination>
+                </div>
+            </base-table>`,
+            data: function () {
+                return {
+                    items: getManyItems(),
+                }
+            },
+        }, { extensions });
 
+        cy.get('.pagination-info').should('be.visible');
+        cy.get('table > tbody').find('tr').should('have.length', 10);
+        cy.get('.pagination-info').should('contain.text', 'Showing 1 to 10 of 26 entries');
+        cy.get('.page-link').should('have.length', 7); // 7 length = 2 previous buttons + 3 page buttons + 2 next buttons
+
+        cy.get('[data-cy="search-input"]').type('a');
+        cy.get('table > tbody').find('tr').should('have.length', 1);
+        cy.get('.pagination-info').should('contain.text', 'Showing 1 to 1 of 1 entries');
+    });
+
+    it('should update paging controls when column filtering is applied', () => {
+        mount({
+            template: `<base-table current-page="1" per-page="5">
+                <div slot="default" slot-scope="scope">
+                    <page-size-select v-model="scope.perPage.value"></page-size-select>
+                    <b-table v-bind:items="items" v-bind:fields="fields" v-bind:per-page="scope.perPage.value" v-bind:current-page="scope.currentPage.value" :filter="scope.columnFilter" :filter-function="scope.columnFilterFunc">
+                        <template #head(isActive)="data">
+                            {{ data.label }}
+                            <b-form-select v-model="data.field.filter.model" size="sm" :options="data.field.filter.selectOptions" data-cy="active-filter"></b-form-select>
+                        </template>
+                        <template #head(age)="data">
+                            {{ data.label }}
+                            <b-form-select v-model="data.field.filter.model" size="sm" :options="data.field.filter.selectOptions" data-cy="age-filter"></b-form-select>
+                        </template>
+                        <template #head(first_name)="data">
+                            {{ data.label }}
+                            <b-form-input v-model="data.field.filter.model" placeholder="Searchie" size="sm" autocomplete="off" data-cy="first-name-filter"></b-form-input>
+                        </template>
+                        <template #head(last_name)="data">
+                            {{ data.label }}
+                            <b-form-input v-model="data.field.filter.model" placeholder="Searchie" size="sm" autocomplete="off" data-cy="last-name-filter"></b-form-input>
+                        </template>
+                    </b-table>
+                    <pagination-info v-bind:current-page="scope.currentPage.value" v-bind:per-page="scope.perPage.value" v-bind:total-rows="scope.totalRows"></pagination-info>
+                    <b-pagination
+                      v-model="scope.currentPage.value"
+                      v-bind:total-rows="scope.totalRows"
+                      v-bind:per-page="scope.perPage.value"
+                    ></b-pagination>
+                </div>
+            </base-table>`,
+            data: function () {
+                return {
+                    fields: [
+                        {
+                            key: 'isActive',
+                            filter: {
+                                model: null,
+                                type: 'select',
+                                selectOptions: [{ text: 'All', value: null }, true, false]
+                            }
+                        },
+                        {
+                            key: 'age',
+                            filter: {
+                                model: null,
+                                type: 'select',
+                                selectOptions: [{ text: 'All', value: null }, ...Array.from(new Set(basicItems.map(i => i.age))).sort()]
+                            }
+                        },
+                        {
+                            key: 'first_name',
+                            filter: { model: null }
+                        },
+                        {
+                            key: 'last_name',
+                            filter: { model: null }
+                        },
+                    ],
+                    items: [...basicItems, ...basicItems, ...basicItems],
+                }
+            },
+        }, { extensions });
+
+        cy.get('.pagination-info').should('be.visible');
+        cy.get('table > tbody').find('tr').should('have.length', 5);
+        cy.get('.pagination-info').should('contain.text', 'Showing 1 to 5 of 9 entries');
+        cy.get('.page-link').should('have.length', 6); // 6 length = 2 previous buttons + 2 page buttons + 2 next buttons
+
+        cy.get('[data-cy="last-name-filter"]').type('z');
+        cy.get('table > tbody').find('tr').should('have.length', 3);
+        cy.get('.pagination-info').should('contain.text', 'Showing 1 to 3 of 3 entries');
+    });
 });
