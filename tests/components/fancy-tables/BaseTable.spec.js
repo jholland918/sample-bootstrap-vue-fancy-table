@@ -43,7 +43,7 @@ describe('Base Table', () => {
         },
     };
 
-    const items = [{ "isActive": true, "age": 32, "first_name": "Lola", "last_name": "Ziems" },
+    const basicItems = [{ "isActive": true, "age": 32, "first_name": "Lola", "last_name": "Ziems" },
     { "isActive": false, "age": 55, "first_name": "Cobb", "last_name": "Macourek" },
     { "isActive": true, "age": 27, "first_name": "Randie", "last_name": "Seago" }];
 
@@ -77,7 +77,7 @@ describe('Base Table', () => {
             </base-table>`,
             data: function () {
                 return {
-                    items: items
+                    items: basicItems
                 }
             }
         }, { extensions });
@@ -212,7 +212,7 @@ describe('Base Table', () => {
             </base-table>`,
             data: function () {
                 return {
-                    items: items
+                    items: basicItems
                 }
             }
         }, { extensions });
@@ -221,7 +221,7 @@ describe('Base Table', () => {
         cy.get('.pagination-info').should('contain.text', 'Showing 1 to 3 of 3 entries');
     });
 
-    it.only('should render all paging controls', () => {
+    it('should render all paging controls', () => {
         mount({
             template: `<base-table current-page="1" per-page="10">
                 <div slot="default" slot-scope="scope">
@@ -243,7 +243,15 @@ describe('Base Table', () => {
         }, { extensions });
 
         cy.get('.pagination-info').should('be.visible');
-        // TODO: write more assertions
+        cy.get('table > tbody').find('tr').should('have.length', 10);
+        cy.get('.pagination-info').should('contain.text', 'Showing 1 to 10 of 26 entries');
+        cy.get('.page-link').should('have.length', 7); // 7 length = 2 previous buttons + 3 page buttons + 2 next buttons
+
+        // Ensure paging controls are reactive to page size changes
+        cy.get('.page-size-select > select').select("5");
+        cy.get('table > tbody').find('tr').should('have.length', 5);
+        cy.get('.pagination-info').should('contain.text', 'Showing 1 to 5 of 26 entries');
+        cy.get('.page-link').should('have.length', 9); // 9 length = 2 previous buttons + 4 page buttons + 1 ellipsis button + 2 next buttons
     });
 
     it('should render column search inputs', () => {
@@ -259,15 +267,19 @@ describe('Base Table', () => {
                   </template>
                         <template #head(isActive)="data">
                             {{ data.label }}
-                            <b-form-select v-model="data.field.filter.model" size="sm" :options="data.field.filter.selectOptions"></b-form-select>
+                            <b-form-select v-model="data.field.filter.model" size="sm" :options="data.field.filter.selectOptions" data-cy="active-filter"></b-form-select>
                         </template>
                         <template #head(age)="data">
                             {{ data.label }}
-                            <b-form-select v-model="data.field.filter.model" size="sm" :options="data.field.filter.selectOptions"></b-form-select>
+                            <b-form-select v-model="data.field.filter.model" size="sm" :options="data.field.filter.selectOptions" data-cy="age-filter"></b-form-select>
                         </template>
-                        <template #head()="data">
+                        <template #head(first_name)="data">
                             {{ data.label }}
-                            <b-form-input v-model="data.field.filter.model" placeholder="Searchie" size="sm" autocomplete="off"></b-form-input>
+                            <b-form-input v-model="data.field.filter.model" placeholder="Searchie" size="sm" autocomplete="off" data-cy="first-name-filter"></b-form-input>
+                        </template>
+                        <template #head(last_name)="data">
+                            {{ data.label }}
+                            <b-form-input v-model="data.field.filter.model" placeholder="Searchie" size="sm" autocomplete="off" data-cy="last-name-filter"></b-form-input>
                         </template>
                     </b-table>
                 </div>
@@ -288,7 +300,7 @@ describe('Base Table', () => {
                             filter: {
                                 model: null,
                                 type: 'select',
-                                selectOptions: [{ text: 'All', value: null }, ...Array.from(new Set(items.map(i => i.age))).sort()]
+                                selectOptions: [{ text: 'All', value: null }, ...Array.from(new Set(basicItems.map(i => i.age))).sort()]
                             }
                         },
                         {
@@ -300,13 +312,49 @@ describe('Base Table', () => {
                             filter: { model: null }
                         },
                     ],
-                    items: items,
+                    items: basicItems,
                     selected: ''
                 }
             }
         }, { extensions });
 
-        // TODO: write assertions
-        //cy.get('.search-input').should('be.visible');
+        // Ensure controls are visible and correctly initialized
+        cy.get('[data-cy="active-filter"]').should((el) => {
+            expect(el).to.be.visible;
+            let options = el.find('option');
+            expect(options).to.have.length(3);
+            expect(options.filter(':contains("All")')).to.exist;
+            expect(options.filter('[value="true"]')).to.exist;
+            expect(options.filter('[value="false"]')).to.exist;
+        });
+
+        cy.get('[data-cy="age-filter"]').should((el) => {
+            expect(el).to.be.visible;
+            let options = el.find('option');
+            expect(options).to.have.length(4);
+            expect(options.filter(':contains("All")')).to.exist;
+            expect(options.filter('[value="27"]')).to.exist;
+            expect(options.filter('[value="32"]')).to.exist;
+            expect(options.filter('[value="55"]')).to.exist;
+        });
+
+        cy.get('[data-cy="first-name-filter"]').should('be.visible');
+        cy.get('[data-cy="last-name-filter"]').should('be.visible');
+
+        // Test a single filter
+        cy.get('tbody').find('tr').should('have.length', 3);
+        cy.get('[data-cy="active-filter"]').select('false');
+        cy.get('tbody').find('tr').should('have.length', 1);
+        cy.get('tbody').find('tr:first-child').should('contain.text', 'false');
+        cy.get('[data-cy="active-filter"]').select('');
+        cy.get('tbody').find('tr').should('have.length', 3);
+
+        // Test combined filters across columns
+        cy.get('[data-cy="first-name-filter"]').type('a');
+        cy.get('tbody').find('tr').should('have.length', 2); // Should be Lola Ziems and Randi Seago
+        cy.get('[data-cy="last-name-filter"]').type('z');
+        cy.get('tbody').find('tr').should('have.length', 1); // Should be Lola Ziems
     });
+
+
 });
