@@ -17,6 +17,7 @@
       v-model="mutableValue"
       :options="options"
       v-on:input="$emit('input', mutableValue)"
+      size="sm"
     ></b-form-select>
     {{ $t("entries") }}
   </div>

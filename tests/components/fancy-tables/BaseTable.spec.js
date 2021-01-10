@@ -230,6 +230,7 @@ describe('Base Table', () => {
                     <pagination-info v-bind:current-page="scope.currentPage.value" v-bind:per-page="scope.perPage.value" v-bind:total-rows="scope.totalRows"></pagination-info>
                     <b-pagination
                       v-model="scope.currentPage.value"
+                      
                       v-bind:total-rows="scope.totalRows"
                       v-bind:per-page="scope.perPage.value"
                     ></b-pagination>
