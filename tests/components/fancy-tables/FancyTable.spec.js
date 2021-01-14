@@ -6,8 +6,8 @@ import '@/plugins/bootstrap-vue';
 import '@/plugins/font-awesome';
 
 import { library as fontawesome } from '@fortawesome/fontawesome-svg-core';
-import { faFileCsv, faFileExcel, faFilePdf, faPrint, faFileAlt } from '@fortawesome/free-solid-svg-icons';
-fontawesome.add(faFileCsv, faFileExcel, faFilePdf, faPrint, faFileAlt);
+import { faFileCsv, faFileExcel, faFilePdf, faPrint, faFileAlt, faFileExport } from '@fortawesome/free-solid-svg-icons';
+fontawesome.add(faFileCsv, faFileExcel, faFilePdf, faPrint, faFileAlt, faFileExport);
 
 import BaseTable from '@/components/fancy-tables/base-table';
 import FancyTable from '@/components/fancy-tables/FancyTable';
@@ -44,9 +44,7 @@ describe('Base Table', () => {
     { "isActive": false, "age": 55, "first_name": "Cobb", "last_name": "Macourek" },
     { "isActive": true, "age": 27, "first_name": "Randie", "last_name": "Seago" }];
 
-    it.only('should render the table', () => {
-        // In this case, scope is not used but included in the template here to show what's available in a simple implementation. 
-        // Really no one should be using the <base-table> like it's used here - they should just use <b-table> directly when no features of <base-table> are needed.
+    it.only('should render zero-config table', () => {
         mount({
             template: `<fancy-table v-bind:items="items"></fancy-table>`,
             data: function () {
@@ -55,5 +53,20 @@ describe('Base Table', () => {
                 }
             }
         }, { extensions });
+
+        cy.get('.export-buttons').should('not.exist');
+    });
+
+    it('should render with export controls', () => {
+        mount({
+            template: `<fancy-table v-bind:items="items" v-bind:show-export-buttons="true"></fancy-table>`,
+            data: function () {
+                return {
+                    items: [...basicItems, ...basicItems, ...basicItems, ...basicItems, ...basicItems]
+                }
+            }
+        }, { extensions });
+
+        cy.get('.export-buttons').should('be.visible');
     });
 });

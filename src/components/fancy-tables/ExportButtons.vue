@@ -1,20 +1,15 @@
 <template>
   <div class="export-buttons">
-    <b-button v-on:click="onTextClick"
-      ><font-awesome-icon :icon="['fas', 'file-alt']" /> Text</b-button
-    >
-    <b-button v-on:click="onExcelClick"
-      ><font-awesome-icon :icon="['fas', 'file-excel']" /> Excel</b-button
-    >
-    <b-button v-on:click="onCsvClick"
-      ><font-awesome-icon :icon="['fas', 'file-csv']" /> CSV</b-button
-    >
-    <b-button v-on:click="onPdfClick"
-      ><font-awesome-icon :icon="['fas', 'file-pdf']" /> PDF</b-button
-    >
-    <b-button v-on:click="onPrintClick"
-      ><font-awesome-icon :icon="['fas', 'print']" /> Print</b-button
-    >
+    <b-dropdown size="sm">
+      <template #button-content>
+        <font-awesome-icon :icon="['fas', 'file-export']" /> Export
+      </template>
+      <b-dropdown-item v-on:click="onExcelClick"><font-awesome-icon :icon="['fas', 'file-excel']" /> Excel</b-dropdown-item>
+      <b-dropdown-item v-on:click="onCsvClick"><font-awesome-icon :icon="['fas', 'file-csv']" /> CSV</b-dropdown-item>
+      <b-dropdown-item v-on:click="onTextClick"><font-awesome-icon :icon="['fas', 'file-alt']" /> Text</b-dropdown-item>
+      <b-dropdown-item v-on:click="onPdfClick"><font-awesome-icon :icon="['fas', 'file-pdf']" /> PDF</b-dropdown-item>
+      <b-dropdown-item v-on:click="onPrintClick"><font-awesome-icon :icon="['fas', 'print']" /> Print</b-dropdown-item>
+    </b-dropdown>
   </div>
 </template>
 <script>
@@ -37,7 +32,14 @@ export default {
     },
     getData: {
       type: Function,
-      required: true
+      required: true,
+    },
+    controlType: {
+      type: String,
+      validator: function (value) {
+        return ["dropdown", "buttons"].indexOf(value) > -1;
+      },
+      default: "dropdown",
     },
   },
   methods: {
